@@ -37,7 +37,7 @@ def add_clown(user_id):
 @router.message(Command("get_data"))
 async def show_data(message: types.Message):
     add_clown(message.from_user.id)
-    if not str(message.from_user.id) == str(ADMIN_ID):
+    if not ADMIN_ID.find(str(message.from_user.id)):
         print(message.from_user.id, "is clown")
         await message.answer("🤡")
         return

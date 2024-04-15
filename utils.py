@@ -30,14 +30,6 @@ def get_user_info_as_str(user_id):
     return text
 
 
-def set_keyboard(buttons):
-    builder = InlineKeyboardBuilder()
-    for txt, data in buttons.items():
-        builder.button(text=txt, callback_data=data)
-    builder.adjust(2, 2, 1)
-    return builder.as_markup()
-
-
 def new_user(user_id):
     path = os.path.join("users", str(user_id))
     if not os.path.exists(path):
