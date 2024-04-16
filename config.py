@@ -14,7 +14,8 @@ defaultForm = {
     'age': 'Не указано',
     'weight': 'Не указано',
     'height': 'Не указано',
-    'avg_sleep_len': 'Не указано'
+    'avg_sleep_len': 'Не указано',
+    'activity_coefficient': 'Не указано'
 }
 
 
@@ -25,3 +26,4 @@ class Form(StatesGroup):
     weight = State()
     height = State()
     avg_sleep_len = State()
+    activ_coef = State()

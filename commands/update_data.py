@@ -1,4 +1,5 @@
 import utils
+import logging
 
 from datetime import datetime
 from aiogram import Router, types, F
@@ -9,14 +10,7 @@ from aiogram.types import CallbackQuery
 from utils import load_last_user_data, set_new_user_data
 
 router = Router()
-
-
-def set_keyboard(buttons):
-    builder = InlineKeyboardBuilder()
-    for txt, data in buttons.items():
-        builder.button(text=txt, callback_data=data)
-    builder.adjust(2, 2, 1)
-    return builder.as_markup()
+logger = logging.getLogger(__name__)
 
 
 def set_digits_keyboard(attr, alr):
@@ -172,7 +166,8 @@ async def update_user_data(message: types.Message, state: FSMContext):
                 'Средняя продолжительность сна': 'UPDAV',
                 '🛑Закончить🛑': 'cancel'
             }
-        )
+        ),
+        parse_mode='markdown'
     )
 
 
@@ -189,16 +184,18 @@ async def update_user_data(call: CallbackQuery):
                 'Средняя продолжительность сна': 'UPDAV',
                 '🛑Закончить🛑': 'cancel'
             }
-        )
+        ),
+        parse_mode='markdown'
     )
     await call.answer()
 
 
 @router.callback_query(F.data == "cancel")
 async def cancel(call: CallbackQuery, state: FSMContext):
+    logger.info(f'{call.from_user.id} successfully changed data')
     await state.clear()
     await call.message.edit_text("Изменения в силе")
-    await call.answer("")
+    await call.answer()
 
 
 @router.callback_query(F.data.startswith("WA"))
@@ -265,8 +262,6 @@ async def update(call: CallbackQuery):
     if len(attr) > 2:
         attr = attr[:5 - len(call.data)]
     cur_state = call.data[5:]
-    print(datetime.today().strftime('%Y-%m-%d %H:%M:%S'), "|", attr_type, "|", attr, "|", cur_state,
-          "|||by_user: ", call.from_user.id)
     if attr_type == 'D':
         await call.message.edit_text(
             cur_state + "_",

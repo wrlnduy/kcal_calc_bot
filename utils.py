@@ -1,9 +1,11 @@
 import json
 import os
+import logging
 
 from config import defaultForm
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.fsm.context import FSMContext
+
+logger = logging.getLogger(__name__)
 
 
 def get_user_info_as_dict(user_id):
@@ -21,12 +23,18 @@ def get_user_info_as_dict(user_id):
 
 def get_user_info_as_str(user_id):
     user_data = get_user_info_as_dict(user_id)
-    text = f"Имя: {user_data['name']}"
+    for attr, value in defaultForm.items():
+        if attr not in user_data.keys():
+            user_data[attr] = value
+    text = "\n```"
+    text += f"\nИмя: {user_data['name']}"
     text += f"\nПол: {user_data['gender']}"
     text += f"\nВозраст: {user_data['age']}"
     text += f"\nВес: {user_data['weight']}"
     text += f"\nРост: {user_data['height']}"
     text += f"\nСредняя продолжительность сна: {user_data['avg_sleep_len']}"
+    text += f"\nКоэффициент активности: {user_data['activity_coefficient']}"
+    text += '\n```'
     return text
 
 
@@ -42,12 +50,34 @@ def new_user(user_id):
 
 async def load_last_user_data(user_id, state: FSMContext):
     data = get_user_info_as_dict(user_id)
-    await state.update_data(name=data['name'])
-    await state.update_data(gender=data['gender'])
-    await state.update_data(age=data['age'])
-    await state.update_data(weight=data['weight'])
-    await state.update_data(height=data['height'])
-    await state.update_data(avg_sleep_len=data['avg_sleep_len'])
+    if 'name' in data.keys():
+        await state.update_data(name=data['name'])
+    else:
+        logger.error(f"{user_id} name is lost")
+    if 'gender' in data.keys():
+        await state.update_data(gender=data['gender'])
+    else:
+        logger.error(f"{user_id} gender is lost")
+    if 'age' in data.keys():
+        await state.update_data(age=data['age'])
+    else:
+        logger.error(f"{user_id} age is lost")
+    if 'weight' in data.keys():
+        await state.update_data(weight=data['weight'])
+    else:
+        logger.error(f"{user_id} weight is lost")
+    if 'height' in data.keys():
+        await state.update_data(height=data['height'])
+    else:
+        logger.error(f"{user_id} height is lost")
+    if 'avg_sleep_len' in data.keys():
+        await state.update_data(avg_sleep_len=data['avg_sleep_len'])
+    else:
+        logger.error(f"{user_id} sleep_len is lost")
+    if 'activity_coefficient' in data.keys():
+        await state.update_data(activ_coef=data['activity_coefficient'])
+    else:
+        logger.error(f"{user_id} activity_coefficient is lost")
 
 
 def set_new_user_data(new_user_data, user_id):

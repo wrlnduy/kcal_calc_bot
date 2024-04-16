@@ -5,7 +5,6 @@ import logging
 import importlib
 import utils
 
-
 from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import Command
 from config import ADMIN_ID, BOT_TOKEN
@@ -14,6 +13,9 @@ CHAT_ID = "@collect_my_bot"
 bot = Bot(token=BOT_TOKEN)
 router = Router()
 dispatcher = Dispatcher()
+logging.basicConfig(filename='logs.txt', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.DEBUG, encoding='utf-8')
+logger = logging.getLogger(__name__)
 
 
 @router.message(Command("start"))
@@ -23,7 +25,7 @@ async def new_user(message: types.Message):
 
 @router.message(Command("get_my_data"))
 async def show_user_data(message: types.Message):
-    await message.answer(utils.get_user_info_as_str(message.from_user.id))
+    await message.answer(utils.get_user_info_as_str(message.from_user.id), parse_mode='markdown')
 
 
 def add_clown(user_id):
@@ -58,7 +60,7 @@ def load_routers():
             continue
         rout = getattr(importlib.import_module(f"commands.{file[:-3]}"), "router")
         dispatcher.include_router(rout)
-        logging.info(f"Router `{file}` has been loaded")
+        logger.info(f"Router `{file}` has been loaded")
 
 
 def look_req_dirs():
