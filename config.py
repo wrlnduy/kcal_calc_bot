@@ -27,3 +27,13 @@ class Form(StatesGroup):
     height = State()
     avg_sleep_len = State()
     activ_coef = State()
+
+
+class Dish(StatesGroup):
+    category = State()
+    name = State()
+    proteins = State()
+    fats = State()
+    carbons = State()
+    kcal = State()
+    correct = State()

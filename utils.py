@@ -2,6 +2,8 @@ import json
 import os
 import logging
 
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+
 from config import defaultForm
 from aiogram.fsm.context import FSMContext
 
@@ -87,3 +89,15 @@ def set_new_user_data(new_user_data, user_id):
     path = os.path.join(path, "data.json")
     with open(path, "w", encoding='utf-8') as data:
         json.dump(new_user_data, data)
+
+
+def set_keyboard(buttons):
+    builder = InlineKeyboardBuilder()
+    for txt, data in buttons.items():
+        builder.button(text=txt, callback_data=data)
+    builder.adjust(2, 2, 1)
+    return builder.as_markup()
+
+
+# добавление блюд в список
+# def add_new_dish(dish_data):
