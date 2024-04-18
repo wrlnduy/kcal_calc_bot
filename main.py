@@ -14,7 +14,7 @@ bot = Bot(token=BOT_TOKEN)
 router = Router()
 dispatcher = Dispatcher()
 logging.basicConfig(filename='logs.txt', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.DEBUG, encoding='utf-8')
+                    level=logging.INFO, encoding='utf-8')
 logger = logging.getLogger(__name__)
 
 
@@ -25,7 +25,19 @@ async def new_user(message: types.Message):
 
 @router.message(Command("get_my_data"))
 async def show_user_data(message: types.Message):
-    await message.answer(utils.get_user_info_as_str(message.from_user.id), parse_mode='markdown')
+    text = '```\n'
+    text += utils.get_user_info_as_str(message.from_user.id)
+    text += '\n```'
+    await message.answer(text, parse_mode='markdown')
+
+
+@router.message(Command("get_my_aim"))
+async def show_user_aim(message: types.Message):
+    text = '```\n'
+    text += 'Ваша текущая цель:\n'
+    text += utils.get_user_aim_as_str(message.from_user.id)
+    text += '\n```'
+    await message.answer(text, parse_mode='markdown')
 
 
 def add_clown(user_id):

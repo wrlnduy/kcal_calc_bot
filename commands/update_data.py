@@ -147,15 +147,17 @@ def set_keyboard(buttons):
     builder = InlineKeyboardBuilder()
     for txt, data in buttons.items():
         builder.button(text=txt, callback_data=data)
-    builder.adjust(2, 2, 1)
     return builder.as_markup()
 
 
 @router.message(Command("update_data"))
 async def update_user_data(message: types.Message, state: FSMContext):
     await load_last_user_data(message.from_user.id, state)
+    text = '```\n'
+    text += utils.get_user_info_as_str(message.from_user.id)
+    text += '\n```'
     await message.answer(
-        utils.get_user_info_as_str(message.from_user.id),
+        text,
         reply_markup=set_keyboard(
             {
                 'Имя': 'UPLNA',
@@ -172,8 +174,11 @@ async def update_user_data(message: types.Message, state: FSMContext):
 
 
 async def update_user_data(call: CallbackQuery):
+    text = '```\n'
+    text += utils.get_user_info_as_str(call.from_user.id)
+    text += '\n```'
     await call.message.edit_text(
-        utils.get_user_info_as_str(call.from_user.id),
+        text,
         reply_markup=set_keyboard(
             {
                 'Имя': 'UPLNA',

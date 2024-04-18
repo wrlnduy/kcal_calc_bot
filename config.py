@@ -15,9 +15,15 @@ defaultForm = {
     'weight': 'Не указано',
     'height': 'Не указано',
     'avg_sleep_len': 'Не указано',
-    'activity_coefficient': 'Не указано'
+    'activ_coef': 'Не указано'
 }
 
+defaultAim = {
+    'calories': 0,
+    'proteins': 0,
+    'fats': 0,
+    'carbs': 0
+}
 
 class Form(StatesGroup):
     name = State()
