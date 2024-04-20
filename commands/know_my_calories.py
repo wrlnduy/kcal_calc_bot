@@ -8,7 +8,7 @@ from aiogram import types, Router, F
 from aiogram.filters import Command
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.fsm.context import FSMContext
-from config import Form
+from config import Form, defaultForm
 
 router = Router()
 
@@ -74,6 +74,19 @@ async def _set_activ_coef(call: types.CallbackQuery, state: FSMContext):
 
 @router.message(Command("set_aim"))
 async def set_aim(message: types.Message):
+    cur_user_data = utils.get_user_info_as_dict(message.from_user.id)
+    if cur_user_data['weight'] == defaultForm['weight']:
+        await message.answer("Сначала введите свой вес /update_data")
+        return
+    if cur_user_data['height'] == defaultForm['height']:
+        await message.answer("Сначала введите свой рост /update_data")
+        return
+    if cur_user_data['age'] == defaultForm['age']:
+        await message.answer("Сначада введите свой возраст /update_data")
+        return
+    if cur_user_data['activ_coef'] == defaultForm['activ_coef']:
+        await message.answer("Сначала установите коэффициент активности /set_activ_coef")
+        return
     await message.answer("Что желаете?",
                          reply_markup=set_keyboard(
                              {

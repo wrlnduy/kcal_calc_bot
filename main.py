@@ -9,7 +9,6 @@ from aiogram import Bot, Dispatcher, Router, types
 from aiogram.filters import Command
 from config import ADMIN_ID, BOT_TOKEN
 
-CHAT_ID = "@collect_my_bot"
 bot = Bot(token=BOT_TOKEN)
 router = Router()
 dispatcher = Dispatcher()
