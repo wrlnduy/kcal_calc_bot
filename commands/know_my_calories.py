@@ -73,16 +73,43 @@ async def _set_activ_coef(call: types.CallbackQuery, state: FSMContext):
 
 
 @router.message(Command("set_aim"))
-async def set_aim(message: types.Message):
+async def set_aim(message: types.Message, state: FSMContext):
     cur_user_data = utils.get_user_info_as_dict(message.from_user.id)
     if cur_user_data['weight'] == defaultForm['weight']:
-        await message.answer("Сначала введите свой вес /update_data")
+        await utils.load_last_user_data(message.from_user.id, state)
+        await message.answer("Сначала укажите свой вес",
+                             reply_markup=set_keyboard(
+                                 {
+                                     'Указать вес': 'UPDWE'
+                                 }
+                             ))
         return
     if cur_user_data['height'] == defaultForm['height']:
-        await message.answer("Сначала введите свой рост /update_data")
+        await utils.load_last_user_data(message.from_user.id, state)
+        await message.answer("Сначала укажите свой рост",
+                             reply_markup=set_keyboard(
+                                 {
+                                     'Указать рост': 'UPDHE'
+                                 }
+                             ))
         return
     if cur_user_data['age'] == defaultForm['age']:
-        await message.answer("Сначада введите свой возраст /update_data")
+        await utils.load_last_user_data(message.from_user.id, state)
+        await message.answer("Сначада укажите свой возраст",
+                             reply_markup=set_keyboard(
+                                 {
+                                     'Указать возраст': 'UPDAG'
+                                 }
+                             ))
+        return
+    if cur_user_data['gender'] == defaultForm['gender']:
+        await utils.load_last_user_data(message.from_user.id, state)
+        await message.answer("Сначала укажите свой пол",
+                             reply_markup=set_keyboard(
+                                 {
+                                     'Указать пол': 'UPLGE'
+                                 }
+                             ))
         return
     if cur_user_data['activ_coef'] == defaultForm['activ_coef']:
         await message.answer("Сначала установите коэффициент активности /set_activ_coef")

@@ -9,6 +9,7 @@ from aiogram.fsm.context import FSMContext
 
 logger = logging.getLogger(__name__)
 
+
 def new_user(user_id):
     path = os.path.join("users", str(user_id))
     if not os.path.exists(path):
@@ -56,30 +57,37 @@ async def load_last_user_data(user_id, state: FSMContext):
     if 'name' in data.keys():
         await state.update_data(name=data['name'])
     else:
+        await state.update_data(name=defaultForm['name'])
         logger.error(f"{user_id} name is lost")
     if 'gender' in data.keys():
         await state.update_data(gender=data['gender'])
     else:
+        await state.update_data(gender=defaultForm['gender'])
         logger.error(f"{user_id} gender is lost")
     if 'age' in data.keys():
         await state.update_data(age=data['age'])
     else:
+        await state.update_data(age=defaultForm['age'])
         logger.error(f"{user_id} age is lost")
     if 'weight' in data.keys():
         await state.update_data(weight=data['weight'])
     else:
+        await state.update_data(weight=defaultForm['weight'])
         logger.error(f"{user_id} weight is lost")
     if 'height' in data.keys():
         await state.update_data(height=data['height'])
     else:
+        await state.update_data(height=defaultForm['height'])
         logger.error(f"{user_id} height is lost")
     if 'avg_sleep_len' in data.keys():
         await state.update_data(avg_sleep_len=data['avg_sleep_len'])
     else:
+        await state.update_data(avg_sleep_len=defaultForm['avg_sleep_len'])
         logger.error(f"{user_id} sleep_len is lost")
     if 'activ_coef' in data.keys():
         await state.update_data(activ_coef=data['activ_coef'])
     else:
+        await state.update_data(activ_coef=defaultForm['activ_coef'])
         logger.error(f"{user_id} activity_coefficient is lost")
 
 
