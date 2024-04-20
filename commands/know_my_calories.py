@@ -152,7 +152,7 @@ def normalize(coef):
     if len(coef) > 4:
         coef = coef[:4]
     coef.replace(',', '.')
-    return coef
+    return float(coef)
 
 
 @router.message(Cpfc.proteins)

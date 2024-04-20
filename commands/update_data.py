@@ -147,6 +147,7 @@ def set_keyboard(buttons):
     builder = InlineKeyboardBuilder()
     for txt, data in buttons.items():
         builder.button(text=txt, callback_data=data)
+    builder.adjust(2, 2, 1)
     return builder.as_markup()
 
 
