@@ -110,7 +110,7 @@ def get_user_aim_as_dict(user_id):
     path = os.path.join(path, "aim.json")
     if not os.path.exists(path):
         with open(path, "w", encoding='utf-8') as data:
-            json.dump(defaultForm, data)
+            json.dump(defaultAim, data)
     with open(path, "r", encoding='utf-8') as data_json:
         data = json.load(data_json)
     return data
