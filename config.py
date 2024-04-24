@@ -10,6 +10,7 @@ ADMIN_ID = os.getenv("ADMIN_ID")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 DEMOCRACY_ID = os.getenv("DEMOCRACY_ID")
 CHAT_ID = os.getenv("BOT_USERNAME")
+NUMBER_OF_BUTTONS = 5
 
 defaultForm = {
     'name': 'Не указано',
@@ -63,7 +64,10 @@ food = {
     'snacks': {}
 }
 
+food_last_page = {}
+
 for food_type in food.keys():
     path = os.path.join("food", str(food_type) + '.json')
     with open(path, 'r', encoding='utf-8') as file:
         food[food_type] = json.load(file)
+    food_last_page[food_type] = int((len(food[food_type]) - 1) / NUMBER_OF_BUTTONS)
