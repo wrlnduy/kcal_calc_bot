@@ -1,4 +1,3 @@
-import config
 import main
 import utils
 
@@ -183,35 +182,23 @@ async def set_own(call: types.CallbackQuery, state: FSMContext):
     await call.answer()
 
 
-def normalize(coef):
-    if coef.startswith(' '):
-        pos = 0
-        while coef[pos] == ' ':
-            pos += 1
-        coef = coef[pos:]
-    if len(coef) > 4:
-        coef = coef[:4]
-    coef.replace(',', '.')
-    return float(coef)
-
-
 @router.message(Cpfc.proteins)
 async def set_proteins(message: types.Message, state: FSMContext):
-    await state.update_data(proteins=normalize(message.text))
+    await state.update_data(proteins=utils.normalize_float(message.text))
     await state.set_state(Cpfc.fats)
     await message.answer('Установитe количество(г на кг веса) жиров')
 
 
 @router.message(Cpfc.fats)
 async def set_fats(message: types.Message, state: FSMContext):
-    await state.update_data(fats=normalize(message.text))
+    await state.update_data(fats=utils.normalize_float(message.text))
     await state.set_state(Cpfc.carbs)
     await message.answer('Установитe количество(г на кг веса) углеводов')
 
 
 @router.message(Cpfc.carbs)
 async def set_carbs(message: types.Message, state: FSMContext):
-    new_aim = await state.update_data(carbs=normalize(message.text))
+    new_aim = await state.update_data(carbs=utils.normalize_float(message.text))
     await state.clear()
     cur_user_data = utils.get_user_info_as_dict(message.from_user.id)
     for key in new_aim.keys():

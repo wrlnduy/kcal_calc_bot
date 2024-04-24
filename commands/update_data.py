@@ -1,7 +1,6 @@
 import utils
 import logging
 
-from datetime import datetime
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import Command
